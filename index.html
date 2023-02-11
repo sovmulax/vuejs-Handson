@@ -1,105 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue JS Set up</title>
-</head>
-
-<body>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <div id="app">
-        <my-form />
-        <h2 v-if="message.length%2 === 0">one: {{ message }}</h2>
-        <h2 v-else>Two: {{ message }}</h2>
-        <ul>
-            <li v-for="number in listofnumber">{{ number }}</li>
-        </ul>
-
-        <button @click="isv = !isv">toggle {{isv}}</button>
-        <button @click="togglebox">Toggle meth {{isv}}</button>
-        <p v-if="isv">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quasi, esse maxime, rerum repellendus numquam
-            ipsum culpa commodi voluptates reprehenderit quo sunt nihil officiis fugiat praesentium quam odit facere non
-            est.
-        </p>
-    </div>
-    <script>
-        const { createApp } = Vue;
-        const app = createApp({
-            data() {
-                return {
-                    message: 'this is my mesage',
-                    isv: true,
-                    listofnumber: [1, 2, 3, 4]
-                }
-            },
-            methods: {
-                togglebox() {
-                    this.isv = !this.isv
-                }
-            },
-        });
-
-        app.component('my-form', {
-            template: `
-            <form>
-                <h2>{{ title }}</h2>
-                <custom-input 
-                    v-for="(item, i) in inputs" :key="i"
-                    v-model="item.value"  :label="item.label" :type="item.type"/>
-                <button type="submit" @click="onsubmit">Submit</button>
-            </form>
-            `,
-            components: ['custom-input'],
-            data() {
-                return {
-                    title: "Formulaire",
-                    inputs: [
-                        {
-                            label: "Email",
-                            value: "",
-                            type: "email"
-                        },
-                        {
-                            label: "Name",
-                            value: "",
-                            type: "text"
-                        }
-                    ]
-                }
-            },
-            methods: {
-                onsubmit(e) {
-                    e.preventDefault();
-                    console.log(this.inputs[0].value, this.inputs[1].value)
-                }
-            },
-        });
-
-        app.component('custom-input', {
-            template: `
-                {{ label }}
-                <input :type="type" v-model="inputValue" > <br>    
-            `,
-            props: ['label', "type", 'modelValue'],
-            computed: {
-                inputValue: {
-                    get() {
-                        return this.modelValue;
-                    },
-                    set(value) {
-                        //console.log(value)
-                        this.$emit('update:modelValue', value)
-                    }
-                }
+<html>
+    <head>
+        <title>Vue 3 Basics</title>
+        <style>
+            .box {
+                background-color: purple;
+                height: 200px;
+                width: 200px;
             }
-        })
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <button @click="toggleBox">Toggle Box</button>
+            <test-box v-if="isVisible" />
+        </div>
 
-        app.mount('#app');
-    </script>
-</body>
-
+        <script src="https://unpkg.com/vue@next"></script>
+        <script>
+            let app = Vue.createApp({
+                data: function() {
+                    return {
+                        isVisible: false
+                    }
+                },
+                methods: {
+                    toggleBox: function() {
+                        this.isVisible = !this.isVisible
+                    }
+                },
+                updated() {
+                    console.log('updated')
+                }
+            })
+            app.component('test-box', {
+                template: `
+                    <div class="box"></div>
+                `,
+                created() {
+                    console.log('created')
+                },
+                mounted() {
+                    console.log('mounted')
+                },
+                unmounted() {
+                    console.log('unmounted')
+                }
+            })
+            app.mount('#app')
+        </script>
+    </body>
 </html>
