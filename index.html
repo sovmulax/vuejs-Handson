@@ -11,11 +11,20 @@
 <body>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <div id="app">
+        <my-form />
         <h2 v-if="message.length%2 === 0">one: {{ message }}</h2>
         <h2 v-else>Two: {{ message }}</h2>
         <ul>
-            <li v-for="number in listofnumber">{{ number  }}</li>
+            <li v-for="number in listofnumber">{{ number }}</li>
         </ul>
+
+        <button @click="isv = !isv">toggle {{isv}}</button>
+        <button @click="togglebox">Toggle meth {{isv}}</button>
+        <p v-if="isv">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quasi, esse maxime, rerum repellendus numquam
+            ipsum culpa commodi voluptates reprehenderit quo sunt nihil officiis fugiat praesentium quam odit facere non
+            est.
+        </p>
     </div>
     <script>
         const { createApp } = Vue;
@@ -23,10 +32,41 @@
             data() {
                 return {
                     message: 'this is my mesage',
+                    isv: true,
                     listofnumber: [1, 2, 3, 4]
                 }
             },
+            methods: {
+                togglebox(){
+                    this.isv = !this.isv
+                }
+            },
         });
+
+        app.component('my-form', {
+            template: `
+            <form>
+                <h2>{{ title }}</h2>
+                <input v-model='name' type="text"/><br/>
+                <input v-model='pass' type="password"/><br/>
+                <button type="submit" @click="onsubmit">Submit</button>
+            </form>
+            `,
+            data() {
+                return {
+                    title: "Formulaire",
+                    name:'',
+                    pass:'',
+                }
+            },
+            methods: {
+                onsubmit(e){
+                    e.preventDefault();
+                    console.log(this.name +' '+ this.pass)
+                }
+            },
+        })
+
         app.mount('#app');
     </script>
 </body>
