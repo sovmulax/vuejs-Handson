@@ -47,8 +47,9 @@
             template: `
             <form>
                 <h2>{{ title }}</h2>
-                <custom-input v-model="name"  v-bind:label="nameLabel"/><br/>
-                <custom-input v-model="password"  label="PassWord"/><br/>
+                <custom-input 
+                    v-for="(item, i) in inputs" :key="i"
+                    v-model="item.value"  :label="item.label" :type="item.type"/>
                 <button type="submit" @click="onsubmit">Submit</button>
             </form>
             `,
@@ -56,16 +57,24 @@
             data() {
                 return {
                     title: "Formulaire",
-                    name: 'test',
-                    password: 'test',
-                    nameLabel: 'Text',
-                    passLabel: 'Password',
+                    inputs: [
+                        {
+                            label: "Email",
+                            value: "",
+                            type: "email"
+                        },
+                        {
+                            label: "Name",
+                            value: "",
+                            type: "text"
+                        }
+                    ]
                 }
             },
             methods: {
                 onsubmit(e) {
                     e.preventDefault();
-                    console.log(this.name + ' ' + this.password)
+                    console.log(this.inputs[0].value, this.inputs[1].value)
                 }
             },
         });
@@ -73,9 +82,9 @@
         app.component('custom-input', {
             template: `
                 {{ label }}
-                <input type="text" v-model="inputValue" />    
+                <input :type="type" v-model="inputValue" > <br>    
             `,
-            props: ['label', 'modelValue'],
+            props: ['label', "type", 'modelValue'],
             computed: {
                 inputValue: {
                     get() {
