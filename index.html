@@ -47,8 +47,8 @@
             template: `
             <form>
                 <h2>{{ title }}</h2>
-                <custom-input  v-bind:label="nameLabel"/><br/>
-                <custom-input  label="PassWord"/><br/>
+                <custom-input v-model="name"  v-bind:label="nameLabel"/><br/>
+                <custom-input v-model="password"  label="PassWord"/><br/>
                 <button type="submit" @click="onsubmit">Submit</button>
             </form>
             `,
@@ -56,16 +56,16 @@
             data() {
                 return {
                     title: "Formulaire",
-                    name: '',
-                    pass: '',
+                    name: 'test',
+                    password: 'test',
                     nameLabel: 'Text',
                     passLabel: 'Password',
                 }
             },
             methods: {
-                onsubmit() {
-                    //e.preventDefault();
-                    console.log(this.name + ' ' + this.pass)
+                onsubmit(e) {
+                    e.preventDefault();
+                    console.log(this.name + ' ' + this.password)
                 }
             },
         });
@@ -75,13 +75,18 @@
                 {{ label }}
                 <input type="text" v-model="inputValue" />    
             `,
-            props: ['label'],
-            
-            data() {
-                return {
-                    inputValue:''
+            props: ['label', 'modelValue'],
+            computed: {
+                inputValue: {
+                    get() {
+                        return this.modelValue;
+                    },
+                    set(value) {
+                        //console.log(value)
+                        this.$emit('update:modelValue', value)
+                    }
                 }
-            },
+            }
         })
 
         app.mount('#app');
