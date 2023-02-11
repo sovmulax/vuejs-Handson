@@ -37,7 +37,7 @@
                 }
             },
             methods: {
-                togglebox(){
+                togglebox() {
                     this.isv = !this.isv
                 }
             },
@@ -47,22 +47,39 @@
             template: `
             <form>
                 <h2>{{ title }}</h2>
-                <input v-model='name' type="text"/><br/>
-                <input v-model='pass' type="password"/><br/>
+                <custom-input  v-bind:label="nameLabel"/><br/>
+                <custom-input  label="PassWord"/><br/>
                 <button type="submit" @click="onsubmit">Submit</button>
             </form>
             `,
+            components: ['custom-input'],
             data() {
                 return {
                     title: "Formulaire",
-                    name:'',
-                    pass:'',
+                    name: '',
+                    pass: '',
+                    nameLabel: 'Text',
+                    passLabel: 'Password',
                 }
             },
             methods: {
-                onsubmit(e){
-                    e.preventDefault();
-                    console.log(this.name +' '+ this.pass)
+                onsubmit() {
+                    //e.preventDefault();
+                    console.log(this.name + ' ' + this.pass)
+                }
+            },
+        });
+
+        app.component('custom-input', {
+            template: `
+                {{ label }}
+                <input type="text" v-model="inputValue" />    
+            `,
+            props: ['label'],
+            
+            data() {
+                return {
+                    inputValue:''
                 }
             },
         })
