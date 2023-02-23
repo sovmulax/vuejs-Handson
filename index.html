@@ -3,17 +3,14 @@
     <head>
         <title>Vue 3 Basics</title>
         <style>
-            .box {
-                background-color: purple;
-                height: 200px;
-                width: 200px;
-            }
+            
         </style>
     </head>
     <body>
         <div id="app">
-            <button @click="toggleBox">Toggle Box</button>
-            <test-box v-if="isVisible" />
+            <input type="number" v-model="value">
+            <button @click="plus">plus</button>
+            <button @click="moins">moins</button>
         </div>
 
         <script src="https://unpkg.com/vue@next"></script>
@@ -21,32 +18,20 @@
             let app = Vue.createApp({
                 data: function() {
                     return {
-                        isVisible: false
+                        value: 0
                     }
                 },
                 methods: {
-                    toggleBox: function() {
-                        this.isVisible = !this.isVisible
+                    plus() {
+                        this.value++
+                    }, 
+
+                    moins(){
+                        this.value--
                     }
                 },
-                updated() {
-                    console.log('updated')
-                }
             })
-            app.component('test-box', {
-                template: `
-                    <div class="box"></div>
-                `,
-                created() {
-                    console.log('created')
-                },
-                mounted() {
-                    console.log('mounted')
-                },
-                unmounted() {
-                    console.log('unmounted')
-                }
-            })
+            
             app.mount('#app')
         </script>
     </body>
