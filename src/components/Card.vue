@@ -30,6 +30,7 @@ console.log(props.notes)
   justify-content: space-between;
   margin-right: 20px;
   margin-bottom: 20px;
+  color: #000;
 }
 .main-text {
   line-height: 1.25;
